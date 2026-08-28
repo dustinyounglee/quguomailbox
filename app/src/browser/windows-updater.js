@@ -53,12 +53,12 @@ function spawn(command, args, callback, options = {}) {
     return;
   }
 
-  spawnedProcess.stdout.on('data', data => {
+  spawnedProcess.stdout.on('data', (data) => {
     stdout += data;
   });
 
   let error = null;
-  spawnedProcess.on('error', processError => {
+  spawnedProcess.on('error', (processError) => {
     error = error || processError;
   });
 
@@ -99,7 +99,7 @@ function spawnUpdate(args, callback, options = {}) {
 }
 
 function createRegistryEntries({ allowEscalation, registerDefaultIfPossible }, callback) {
-  const escapeBackticks = str => str.replace(/\\/g, '\\\\');
+  const escapeBackticks = (str) => str.replace(/\\/g, '\\\\');
 
   const isWindows7 = os.release().startsWith('6.1');
   const requiresLocalMachine = isWindows7;
@@ -147,7 +147,7 @@ function createRegistryEntries({ allowEscalation, registerDefaultIfPossible }, c
 
       const importTempPath = path.join(os.tmpdir(), `mailspring-reg-${Date.now()}.reg`);
 
-      fs.writeFile(importTempPath, importContents, writeErr => {
+      fs.writeFile(importTempPath, importContents, (writeErr) => {
         if (writeErr) {
           callback(writeErr);
           return;
@@ -156,13 +156,13 @@ function createRegistryEntries({ allowEscalation, registerDefaultIfPossible }, c
         spawn(
           spawnPath,
           spawnArgs.concat(['import', escapeBackticks(importTempPath)]),
-          spawnErr => {
+          (spawnErr) => {
             if (isWindows7 && registerDefaultIfPossible) {
               const defaultReg = path.join(appFolder, 'resources', 'mailspring-mailto-default.reg');
               spawn(
                 spawnPath,
                 spawnArgs.concat(['import', escapeBackticks(defaultReg)]),
-                spawnDefaultErr => {
+                (spawnDefaultErr) => {
                   callback(spawnDefaultErr, true);
                 }
               );
@@ -183,11 +183,11 @@ exports.createRegistryEntries = createRegistryEntries;
 exports.existsSync = () => fs.existsSync(updateDotExe);
 
 // Register the AppUserModelId with a display name so Windows notifications
-// show "Mailspring" instead of "com.squirrel.mailspring.mailspring"
+// Show the branded product name instead of the internal AUMID.
 // Registry path: HKEY_CURRENT_USER\SOFTWARE\Classes\AppUserModelId\{AUMID}
 function registerAppUserModelId(callback) {
-  const aumid = 'com.squirrel.mailspring.mailspring';
-  const displayName = 'Mailspring';
+  const aumid = 'com.squirrel.qgmail.qgmail';
+  const displayName = 'QGMail';
   const iconPath = path.join(appFolder, 'resources', 'mailspring-square.ico');
 
   let regPath = 'reg.exe';
@@ -201,7 +201,7 @@ function registerAppUserModelId(callback) {
   spawn(
     regPath,
     ['add', regKey, '/v', 'DisplayName', '/t', 'REG_SZ', '/d', displayName, '/f'],
-    err => {
+    (err) => {
       if (err) {
         console.warn('Failed to register AUMID DisplayName:', err);
       }
@@ -210,7 +210,7 @@ function registerAppUserModelId(callback) {
         spawn(
           regPath,
           ['add', regKey, '/v', 'IconUri', '/t', 'REG_SZ', '/d', iconPath, '/f'],
-          iconErr => {
+          (iconErr) => {
             if (iconErr) {
               console.warn('Failed to register AUMID IconUri:', iconErr);
             }
@@ -232,12 +232,15 @@ exports.registerAppUserModelId = registerAppUserModelId;
 function copyVisualElements() {
   try {
     const files = [
-      'mailspring-75px.png',
-      'mailspring-150px.png',
-      'mailspring.VisualElementsManifest.xml',
+      ['mailspring-75px.png', 'mailspring-75px.png'],
+      ['mailspring-150px.png', 'mailspring-150px.png'],
+      ['mailspring.VisualElementsManifest.xml', 'QGMail.VisualElementsManifest.xml'],
     ];
-    for (const file of files) {
-      fs.copyFileSync(path.join(appFolder, 'resources', file), path.join(rootAppDataFolder, file));
+    for (const [source, target] of files) {
+      fs.copyFileSync(
+        path.join(appFolder, 'resources', source),
+        path.join(rootAppDataFolder, target)
+      );
     }
   } catch (err) {
     // Ignore errors - visual elements are optional
@@ -255,7 +258,7 @@ function copyVisualElements() {
 // launching the new one. Without the Wait variant, the new instance can start
 // before the old one exits, hit the single-instance lock, and immediately quit
 // — leaving no running instance. See: https://github.com/electron/electron/pull/6037
-exports.restartMailspring = app => {
+exports.restartMailspring = (app) => {
   app.once('will-quit', () => {
     spawnDetached(updateDotExe, ['--processStartAndWait', exeName]);
   });
@@ -267,7 +270,7 @@ exports.restartMailspring = app => {
 // processes in detached mode and exit immediately to avoid timeout.
 // See: https://github.com/Squirrel/Squirrel.Windows/issues/501
 // See: https://github.com/Squirrel/Squirrel.Windows/issues/1145
-exports.handleSquirrelInstall = app => {
+exports.handleSquirrelInstall = (app) => {
   // Spawn Update.exe to create shortcuts (detached - won't block exit)
   spawnDetached(updateDotExe, [
     '--createShortcut',
@@ -285,22 +288,22 @@ exports.handleSquirrelInstall = app => {
     'Windows',
     'Start Menu',
     'Programs',
-    'Mailspring.lnk'
+    'QGMail.lnk'
   );
   const desktopPath = path.join(
     process.env.USERPROFILE || process.env.HOME,
     'Desktop',
-    'Mailspring.lnk'
+    'QGMail.lnk'
   );
   const iconPath = path.join(appFolder, 'resources', 'mailspring-square.ico');
 
   const shortcutOptions = {
     target: updateDotExe,
-    args: '--processStart mailspring.exe',
+    args: '--processStart QGMail.exe',
     icon: fs.existsSync(iconPath) ? iconPath : undefined,
     iconIndex: 0,
-    description: 'The best email app for people and teams at work',
-    appUserModelId: 'com.squirrel.mailspring.mailspring',
+    description: '趣果私邮客户端（QGMail）',
+    appUserModelId: 'com.squirrel.qgmail.qgmail',
     toastActivatorClsid: '{E6AD16B0-2830-48E7-9DB7-439152FA917B}',
   };
 
@@ -321,7 +324,7 @@ exports.handleSquirrelInstall = app => {
   }
 
   // Spawn reg.exe to register AUMID (detached - won't block exit)
-  const aumid = 'com.squirrel.mailspring.mailspring';
+  const aumid = 'com.squirrel.qgmail.qgmail';
   const regKey = `HKEY_CURRENT_USER\\SOFTWARE\\Classes\\AppUserModelId\\${aumid}`;
   let regPath = 'reg.exe';
   if (process.env.SystemRoot) {
@@ -335,7 +338,7 @@ exports.handleSquirrelInstall = app => {
     '/t',
     'REG_SZ',
     '/d',
-    'Mailspring',
+    'QGMail',
     '/f',
   ]);
   if (fs.existsSync(iconPath)) {
@@ -354,7 +357,7 @@ exports.handleSquirrelInstall = app => {
 // Squirrel runs the NEW app version with this flag after extracting an update.
 // We update shortcuts to point to the new version and exit immediately.
 // The actual app restart happens later when the user clicks "Install Update".
-exports.handleSquirrelUpdated = app => {
+exports.handleSquirrelUpdated = (app) => {
   // Update shortcuts to point to the new app version (detached - won't block exit)
   spawnDetached(updateDotExe, [
     '--createShortcut',
@@ -370,7 +373,7 @@ exports.handleSquirrelUpdated = app => {
 };
 
 // Handle --squirrel-uninstall event with fast exit.
-exports.handleSquirrelUninstall = app => {
+exports.handleSquirrelUninstall = (app) => {
   // Spawn Update.exe to remove shortcuts (detached - won't block exit)
   spawnDetached(updateDotExe, ['--removeShortcut', exeName]);
 
@@ -381,12 +384,12 @@ exports.handleSquirrelUninstall = app => {
     'Windows',
     'Start Menu',
     'Programs',
-    'Mailspring.lnk'
+    'QGMail.lnk'
   );
   const desktopPath = path.join(
     process.env.USERPROFILE || process.env.HOME,
     'Desktop',
-    'Mailspring.lnk'
+    'QGMail.lnk'
   );
 
   try {

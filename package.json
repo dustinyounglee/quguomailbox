@@ -1,8 +1,8 @@
 {
-  "name": "mailspring-root",
+  "name": "qgmail-root",
   "version": "0.0.1",
-  "description": "Packages required to develop and build Mailspring",
-  "author": "Mailspring",
+  "description": "Packages required to develop and build QGMail",
+  "author": "QGMail",
   "license": "GPL-3.0",
   "repository": {
     "type": "git",

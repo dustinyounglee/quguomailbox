@@ -24,7 +24,7 @@ const RTL_LANGS = [
   'yi' /* 'ייִדיש', Yiddish */,
 ];
 
-// For now, we only default to a localized version of Mailspring if the translations
+// For now, we only default to a localized version of QGMail if the translations
 // have been manually reviewed by a contributor. We have Google translations in /tons/
 // of languages but in many languages the translations are poor.
 const VERIFIED_LANGS = [
@@ -164,7 +164,7 @@ const LANG_NAMES = {
 const systemLocale =
   process.type === 'renderer' ? window.navigator.language : require('electron').app.getLocale();
 
-// The locale Mailspring will default to. We do not default to unverified translations
+// The locale QGMail will default to. We do not default to unverified translations
 const automaticLocale =
   VERIFIED_LANGS.includes(systemLocale) || VERIFIED_LANGS.includes(systemLocale.split('-').shift())
     ? systemLocale
@@ -180,6 +180,13 @@ let localizations = {};
 let locale = null;
 
 export let isRTL = false;
+
+function applyProductBrand(text) {
+  const productName = locale && locale.toLowerCase().startsWith('zh') ? '趣果私邮客户端' : 'QGMail';
+  return typeof text === 'string'
+    ? text.replace(/Mailspring/g, productName).replace(/QGMail/g, productName)
+    : text;
+}
 
 export function initializeLocalization({ configDirPath }) {
   locale = automaticLocale;
@@ -218,7 +225,7 @@ export function initializeLocalization({ configDirPath }) {
 
 export function localized(en, ...subs) {
   let i = 0;
-  let translated = localizations[en] || en;
+  let translated = applyProductBrand(localizations[en] || en);
   if (subs.length) {
     // Support "%@ and %@" OR "%1$@ and %2$@" which allows for param reordering.
     // The translation may contain this format even if the original string does not.
@@ -234,7 +241,7 @@ export function localized(en, ...subs) {
 }
 
 export function localizedReactFragment(en, ...subs) {
-  let translated = localizations[en] || en;
+  let translated = applyProductBrand(localizations[en] || en);
   if (!subs.length) {
     return translated;
   }

@@ -1,29 +1,29 @@
 Windows Registry Editor Version 5.00
 
 [{{HKEY_ROOT}}\SOFTWARE\Classes\Mailspring.Url.mailto]
-"FriendlyTypeName"="Mailspring Url"
+"FriendlyTypeName"="QGMail Url"
 
 [{{HKEY_ROOT}}\SOFTWARE\Classes\Mailspring.Url.mailto\shell]
 
 [{{HKEY_ROOT}}\SOFTWARE\Classes\Mailspring.Url.mailto\shell\open]
 
 [{{HKEY_ROOT}}\SOFTWARE\Classes\Mailspring.Url.mailto\shell\open\command]
-@="\"{{PATH_TO_ROOT_FOLDER}}\\Update.exe\" --processStart mailspring.exe --process-start-args %1"
+@="\"{{PATH_TO_ROOT_FOLDER}}\\Update.exe\" --processStart QGMail.exe --process-start-args %1"
 
 
 [{{HKEY_ROOT}}\SOFTWARE\Clients\Mail\Mailspring]
-@="Mailspring"
+@="QGMail"
 "LocalizedString"="@{{PATH_TO_ROOT_FOLDER}}\\Update.exe,-123"
 
 [{{HKEY_ROOT}}\SOFTWARE\Clients\Mail\Mailspring\DefaultIcon]
-@="{{PATH_TO_APP_FOLDER}}\\mailspring.exe,1"
+@="{{PATH_TO_APP_FOLDER}}\\QGMail.exe,1"
 
 [{{HKEY_ROOT}}\SOFTWARE\Clients\Mail\Mailspring\Capabilities]
-"ApplicationName"="Mailspring"
-"ApplicationDescription"="A fast, modern mail client designed to help you boost your productivity."
+"ApplicationName"="QGMail"
+"ApplicationDescription"="趣果私邮客户端"
 
 [{{HKEY_ROOT}}\SOFTWARE\Clients\Mail\Mailspring\Capabilities\StartMenu]
-"Mail"="Mailspring"
+"Mail"="QGMail"
 
 [{{HKEY_ROOT}}\SOFTWARE\Clients\Mail\Mailspring\Capabilities\URLAssociations]
 "mailto"="Mailspring.Url.mailto"
@@ -34,27 +34,27 @@ Windows Registry Editor Version 5.00
 @="URL:MailTo Protocol"
 
 [{{HKEY_ROOT}}\SOFTWARE\Clients\Mail\Mailspring\Protocols\mailto\DefaultIcon]
-@="{{PATH_TO_APP_FOLDER}}\\mailspring.exe,1"
+@="{{PATH_TO_APP_FOLDER}}\\QGMail.exe,1"
 
 [{{HKEY_ROOT}}\SOFTWARE\Clients\Mail\Mailspring\Protocols\mailto\shell]
 
 [{{HKEY_ROOT}}\SOFTWARE\Clients\Mail\Mailspring\Protocols\mailto\shell\open]
 
 [{{HKEY_ROOT}}\SOFTWARE\Clients\Mail\Mailspring\Protocols\mailto\shell\open\command]
-@="\"{{PATH_TO_ROOT_FOLDER}}\\Update.exe\" --processStart mailspring.exe --process-start-args %1"
+@="\"{{PATH_TO_ROOT_FOLDER}}\\Update.exe\" --processStart QGMail.exe --process-start-args %1"
 
 [{{HKEY_ROOT}}\SOFTWARE\Clients\Mail\Mailspring\shell]
 
 [{{HKEY_ROOT}}\SOFTWARE\Clients\Mail\Mailspring\shell\open]
 
 [{{HKEY_ROOT}}\SOFTWARE\Clients\Mail\Mailspring\shell\open\command]
-@="\"{{PATH_TO_ROOT_FOLDER}}\\Update.exe\" --processStart mailspring.exe"
+@="\"{{PATH_TO_ROOT_FOLDER}}\\Update.exe\" --processStart QGMail.exe"
 
 [{{HKEY_ROOT}}\SOFTWARE\RegisteredApplications]
-"Mailspring"="Software\\Clients\\Mail\\Mailspring\\Capabilities"
+"QGMail"="Software\\Clients\\Mail\\Mailspring\\Capabilities"
 
 
 [HKEY_CURRENT_USER\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache]
-"{{PATH_TO_ROOT_FOLDER}}\\Update.exe"="Mailspring"
-"{{PATH_TO_ROOT_FOLDER}}\\Update.exe.FriendlyAppName"="Mailspring"
-"{{PATH_TO_ROOT_FOLDER}}\\Update.exe.ApplicationCompany"="Mailspring"
+"{{PATH_TO_ROOT_FOLDER}}\\Update.exe"="QGMail"
+"{{PATH_TO_ROOT_FOLDER}}\\Update.exe.FriendlyAppName"="QGMail"
+"{{PATH_TO_ROOT_FOLDER}}\\Update.exe.ApplicationCompany"="QGMail"

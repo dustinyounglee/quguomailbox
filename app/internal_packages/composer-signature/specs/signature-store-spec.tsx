@@ -1,5 +1,5 @@
 /* eslint quote-props: 0 */
-import { SignatureStore } from 'mailspring-exports';
+import { localized, SignatureStore } from 'mailspring-exports';
 
 let SIGNATURES = {
   '1': {
@@ -58,6 +58,31 @@ describe('SignatureStore', function signatureStore() {
       const toRemove = SIGNATURES[SignatureStore.selectedSignatureId];
       SignatureStore._onRemoveSignature(toRemove);
       expect(SignatureStore.selectedSignatureId).not.toEqual('1');
+    });
+  });
+
+  describe('legacy generated signature migration', () => {
+    it('rebrands the saved default signature and removes the old website link', () => {
+      SignatureStore.signatures = {
+        initial: {
+          id: 'initial',
+          title: 'Default',
+          body: '<div><div>Sent from <a href="https://getmailspring.com/">Mailspring</a>, the best free email app for work</div></div>',
+          data: {
+            title: 'Sent from Mailspring, the best free email app for work',
+            templateName: 'SignatureB',
+          },
+        },
+      };
+
+      SignatureStore._migrateLegacyDefaultSignatures();
+
+      const migrated = SignatureStore.signatures.initial;
+      expect(migrated.body).toContain(localized('QGMail'));
+      expect(migrated.body).not.toContain('Mailspring');
+      expect(migrated.body).not.toContain('getmailspring.com');
+      expect(migrated.data.title).toContain(localized('QGMail'));
+      expect(SignatureStore._saveSignatures).toHaveBeenCalled();
     });
   });
 });

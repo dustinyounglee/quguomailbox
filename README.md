@@ -1,26 +1,26 @@
-# 💌 Mailspring
+# 💌 趣果私邮客户端（QGMail）
 
-**Mailspring is a new version of Nylas Mail maintained by one of the original authors. It's faster, leaner, and shipping today!** It replaces the JavaScript sync code in Nylas Mail with a new C++ sync engine based on [Mailcore2](https://github.com/MailCore/mailcore2). It uses roughly half the RAM and CPU of Nylas Mail and idles with almost zero "CPU Wakes", which translates to great battery life. It also has an entirely revamped composer and other great new features.
+**QGMail（趣果私邮客户端）is a fast, extensible desktop email client based on Mailspring.** It replaces the JavaScript sync code in Nylas Mail with a C++ sync engine based on [Mailcore2](https://github.com/MailCore/mailcore2), while retaining a modern composer and a plugin-based interface.
 
-Mailspring's UI is open source (GPLv3) and written in TypeScript with [Electron](https://github.com/atom/electron) and [React](https://facebook.github.io/react/) - it's built on a plugin architecture and was designed to be easy to extend. Check out [CONTRIBUTING.md](https://github.com/Foundry376/Mailspring/blob/master/CONTRIBUTING.md) to get started!
+QGMail's UI is open source (GPLv3) and written in TypeScript with [Electron](https://github.com/atom/electron) and [React](https://facebook.github.io/react/). It uses a plugin architecture designed to be easy to extend. See [CONTRIBUTING.md](https://github.com/Foundry376/Mailspring/blob/master/CONTRIBUTING.md) to get started.
 
-Mailspring's sync engine is spawned by the Electron application and runs locally on your computer. [It is open source (GPLv3) and written in C++ and C.](https://github.com/Foundry376/Mailspring-Sync) For convenience, however, when you set up your development environment, Mailspring uses the latest version of the sync engine we've shipped for your platform so you don't need to pull sources or install its compile-time dependencies.
+QGMail's sync engine is spawned by the Electron application and runs locally on your computer. [It is open source (GPLv3) and written in C++ and C.](https://github.com/Foundry376/Mailspring-Sync)
 
-![Mailspring Screenshot](https://github.com/Foundry376/Mailspring/raw/master/screenshots/hero_graphic_mac%402x.png)
+![QGMail Screenshot](https://github.com/Foundry376/Mailspring/raw/master/screenshots/hero_graphic_mac%402x.png)
 
 ## Features
 
-Mailspring comes packed with powerful features like Unified Inbox, Snooze, Send
-Later, Mail Rules, Templates and more. Mailspring Pro, which you can unlock
+QGMail comes packed with powerful features like Unified Inbox, Snooze, Send
+Later, Mail Rules, Templates and more. QGMail Pro, which you can unlock
 with a monthly subscription, adds even more features for people who send a ton
 of email: link tracking, read receipts, mailbox analytics, contact and company
-profiles. **All of these features run in the client - Mailspring does not send
+profiles. **All of these features run in the client - QGMail does not send
 your email credentials to the cloud.** For a full list of features, check out
 [getmailspring.com](https://getmailspring.com/).
 
-## Download Mailspring
+## Download QGMail
 
-You can download compiled versions of Mailspring for Windows, Mac OS X, and
+You can download compiled versions of QGMail for Windows, macOS, and
 Linux (deb, rpm and snap) from
 [https://getmailspring.com/download](https://getmailspring.com/download).
 

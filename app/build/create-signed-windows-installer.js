@@ -13,17 +13,17 @@ const { version } = require(path.join(appDir, 'package.json'));
 const config = {
   usePackageJson: false,
   outputDirectory: path.join(appDir, 'dist'),
-  appDirectory: path.join(appDir, 'dist', 'mailspring-win32-x64'),
+  appDirectory: path.join(appDir, 'dist', 'QGMail-win32-x64'),
   loadingGif: path.join(appDir, 'build', 'resources', 'win', 'loading.gif'),
   iconUrl: 'http://mailspring-builds.s3.amazonaws.com/assets/mailspring-square.ico',
-  description: 'Mailspring',
+  description: 'QGMail',
   version: version,
-  title: 'Mailspring',
+  title: 'QGMail',
   authors: 'Foundry 376, LLC',
   setupIcon: path.join(appDir, 'build', 'resources', 'win', 'mailspring-square.ico'),
-  setupExe: 'MailspringSetup.exe',
-  exe: 'mailspring.exe',
-  name: 'Mailspring',
+  setupExe: 'QGMailSetup.exe',
+  exe: 'QGMail.exe',
+  name: 'QGMail',
 };
 
 console.log(config);
@@ -34,7 +34,7 @@ createWindowsInstaller(config)
     console.log('createWindowsInstaller succeeded.');
     process.exit(0);
   })
-  .catch(e => {
+  .catch((e) => {
     console.error(`createWindowsInstaller failed: ${e.message}`);
     process.exit(1);
   });

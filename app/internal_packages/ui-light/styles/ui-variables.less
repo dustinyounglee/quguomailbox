@@ -1,0 +1,66 @@
+// Modern light theme tokens. Keeping these in the theme package means plugins
+// importing `ui-variables` receive the same palette without changing dark or
+// third-party themes.
+@import 'base/ui-variables';
+
+@accent-primary: var(--system-accent, #5b6cf9);
+@accent-primary-dark: var(--system-accent-dark, #4556e6);
+
+@background-primary: #ffffff;
+@background-off-primary: #fbfcfe;
+@background-secondary: #f5f7fa;
+@background-tertiary: #64748b;
+
+@text-color: #172033;
+@text-color-heading: #111827;
+@text-color-subtle: #667085;
+@text-color-very-subtle: #98a2b3;
+@text-color-link: @accent-primary;
+@text-color-link-hover: @accent-primary-dark;
+@text-color-link-active: @accent-primary-dark;
+
+@font-family-sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Nylas-Pro', sans-serif;
+@font-family: @font-family-sans-serif;
+@font-family-heading: @font-family-sans-serif;
+
+@panel-background-color: #f7f8fb;
+@source-list-bg: @panel-background-color;
+@source-list-active-bg: #e9edff;
+@source-list-active-color: @accent-primary-dark;
+
+@toolbar-background-color: #fbfcfe;
+@border-color-primary: #e4e7ec;
+@border-color-secondary: #eaecf0;
+@border-color-divider: #e7eaf0;
+
+@list-bg: #ffffff;
+@list-border: #edf0f4;
+@list-hover-bg: #f8f9fc;
+@list-focused-color: @text-color;
+@list-focused-bg: #eef1ff;
+@list-focused-border: #dfe4ff;
+@list-selected-color: @text-color;
+@list-selected-bg: #f2f4ff;
+@list-selected-border: #e1e5ff;
+
+@btn-default-bg-color: #ffffff;
+@btn-default-text-color: #475467;
+@btn-border-color: rgba(16, 24, 40, 0.12);
+@btn-icon-color: #667085;
+// Keep this token a concrete color: legacy component styles still use LESS
+// color functions such as darken(), which cannot evaluate a CSS variable.
+@btn-emphasis-bg-color: #5b6cf9;
+
+@input-bg: #ffffff;
+@input-border-color: #dfe3ea;
+@input-border-color-blurred: #e7eaf0;
+
+@border-radius-base: 7px;
+@border-radius-large: 10px;
+@border-radius-small: 5px;
+@component-border-radius: 7px;
+
+@standard-shadow-color: rgba(16, 24, 40, 0.1);
+@standard-shadow: 0 8px 24px rgba(16, 24, 40, 0.12);
+@shadow-border: 0 0 0 1px rgba(16, 24, 40, 0.1);
+@background-gradient: none;

@@ -208,7 +208,7 @@ class PreferencesAccountDetails extends Component<
     try {
       const logs = await AppEnv.mailsyncBridge.tailClientLog(id);
       const result = [
-        `Mailspring Version: ${AppEnv.getVersion()}`,
+        `QGMail Version: ${AppEnv.getVersion()}`,
         `Platform: ${process.platform}`,
         `Account State: ${syncState}`,
         `Account Provider: ${provider}`,
@@ -263,7 +263,7 @@ class PreferencesAccountDetails extends Component<
       case Account.SYNC_STATE_AUTH_FAILED:
         return this._renderErrorDetail(
           localized(
-            `Mailspring can no longer authenticate with %@. The password or authentication may have changed.`,
+            `QGMail can no longer authenticate with %@. The password or authentication may have changed.`,
             account.emailAddress
           ),
           [
@@ -274,7 +274,7 @@ class PreferencesAccountDetails extends Component<
       case Account.SYNC_STATE_ERROR:
         return this._renderErrorDetail(
           localized(
-            `Mailspring encountered errors syncing this account. Crash reports have been sent to the Mailspring team and we'll work to fix these errors in the next release.`
+            `QGMail encountered errors syncing this account. Crash reports have been sent to the QGMail team and we'll work to fix these errors in the next release.`
           ),
           [
             { text: localized('Reconnect'), action: this._onReconnect },

@@ -55,7 +55,7 @@ function isInApp(filename) {
 // Sentry expects frames oldest-first; V8 produces newest-first, so reverse.
 
 // In packaged builds, frames contain absolute paths like:
-//   /Applications/Mailspring.app/Contents/Resources/app.asar/src/foo.js
+//   /Applications/QGMail.app/Contents/Resources/app.asar/src/foo.js
 // Normalize to app:///src/foo.js so Sentry matches uploaded source map artifacts.
 function normalizeFilename(filename) {
   const asarIdx = filename.indexOf('.asar/');
@@ -129,10 +129,10 @@ function sendEnvelope(event, release) {
       'X-Sentry-Auth': `Sentry sentry_version=7, sentry_key=${publicKey}, sentry_client=mailspring/${release}`,
     },
   });
-  req.on('error', e => {
+  req.on('error', (e) => {
     safeLog(`Sentry: ${e.message}`);
   });
-  req.on('response', res => {
+  req.on('response', (res) => {
     // Drain the response so the socket can be released back to the agent
     // and the event loop doesn't stay alive past app quit.
     res.on('data', () => {});
@@ -159,10 +159,7 @@ module.exports = class SentryErrorReporter {
       try {
         getMac((err, macAddress) => {
           if (!err && macAddress) {
-            this.deviceHash = crypto
-              .createHash('sha256')
-              .update(macAddress)
-              .digest('hex');
+            this.deviceHash = crypto.createHash('sha256').update(macAddress).digest('hex');
           }
         });
       } catch (err) {

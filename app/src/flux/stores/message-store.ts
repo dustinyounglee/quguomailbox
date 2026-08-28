@@ -8,7 +8,7 @@ import FocusedPerspectiveStore from './focused-perspective-store';
 import FocusedContentStore from './focused-content-store';
 import * as ExtensionRegistry from '../../registries/extension-registry';
 import electron from 'electron';
-import { MessageViewExtension } from 'mailspring-exports';
+import { MessageViewExtension, localized } from 'mailspring-exports';
 import { DatabaseChangeRecord } from './database-change-record';
 
 const FolderNamesHiddenByDefault = ['spam', 'trash'];
@@ -200,7 +200,7 @@ class _MessageStore extends MailspringStore {
   }
 
   _setWindowTitle() {
-    const title = 'Mailspring' + (this._thread ? ' · ' + this._thread.subject : '');
+    const title = localized('QGMail') + (this._thread ? ' · ' + this._thread.subject : '');
     require('@electron/remote').getCurrentWindow().setTitle(title);
   }
 

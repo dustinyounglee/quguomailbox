@@ -142,7 +142,7 @@ class _IdentityStore extends MailspringStore {
       : null;
 
     if (this._identity && !this._identity.token) {
-      const message = `Your Mailspring ID password could not be loaded from your keychain. Please visit Preferences > Subscription and click "Setup Mailspring ID" to sign in to your Mailspring account again.\n\nYour Mailspring ID email address is ${this._identity.emailAddress}.`;
+      const message = `Your QGMail ID password could not be loaded from your keychain. Please visit Preferences > Subscription and click "Setup QGMail ID" to sign in to your QGMail account again.\n\nYour QGMail ID email address is ${this._identity.emailAddress}.`;
       console.warn(message);
 
       if (!this._displayedPasswordError) {

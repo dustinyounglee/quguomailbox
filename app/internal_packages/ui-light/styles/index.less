@@ -1,0 +1,345 @@
+@import 'ui-variables';
+
+// Application chrome
+.sheet-toolbar-container {
+  background: @toolbar-background-color;
+  background-image: none;
+}
+
+.sheet-toolbar {
+  height: 42px;
+  min-height: 42px;
+  max-height: 42px;
+  border-bottom: 1px solid @border-color-divider;
+
+  .item-container .window-title {
+    line-height: 42px;
+    font-weight: @font-weight-medium;
+  }
+
+  .btn-toolbar {
+    height: 28px;
+    line-height: 28px;
+    margin-top: 7px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    background-image: none;
+    box-shadow: none;
+    transition:
+      background-color 120ms ease,
+      transform 120ms ease;
+
+    &:hover {
+      background: #eef1f5;
+    }
+
+    &:active {
+      background: #e6eaf0;
+      transform: translateY(1px);
+    }
+
+    img.content-mask {
+      background-color: @btn-icon-color;
+    }
+  }
+
+  .button-group {
+    gap: 2px;
+
+    .btn.btn-toolbar {
+      border-radius: 7px;
+    }
+  }
+}
+
+#message-list.height-fix {
+  height: calc(~'100% - 43px');
+  min-height: calc(~'100% - 43px');
+}
+
+.toolbar-window-controls {
+  margin-top: 11px;
+}
+
+// Search field
+.nylas-search-bar {
+  margin: 6px 10px;
+
+  .menu .header-container {
+    height: 30px;
+
+    input {
+      height: 30px;
+      padding-left: 31px;
+      padding-right: 28px;
+      color: @text-color;
+      background: #f1f3f7;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      box-shadow: none;
+      transition:
+        background-color 120ms ease,
+        border-color 120ms ease,
+        box-shadow 120ms ease;
+
+      &:hover {
+        background: #eceff4;
+      }
+
+      &:focus {
+        background: @background-primary;
+        border-color: rgba(91, 108, 249, 0.55);
+        box-shadow: 0 0 0 3px rgba(91, 108, 249, 0.12);
+      }
+    }
+  }
+
+  .search-accessory.search {
+    top: 11px;
+    left: 10px;
+  }
+
+  .search-accessory.clear {
+    top: 6px;
+  }
+
+  .menu .content-container {
+    top: 32px;
+    border-radius: 9px;
+    box-shadow: @standard-shadow;
+    overflow: hidden;
+  }
+}
+
+// Sidebar
+.column-RootSidebar,
+.account-sidebar,
+.account-sidebar-sections {
+  background: @panel-background-color;
+}
+
+.account-sidebar-sections {
+  padding: 8px 8px 16px;
+
+  .outline-view section {
+    margin-bottom: 10px;
+  }
+
+  .outline-view .heading {
+    padding: 13px 10px 6px;
+    color: @text-color-very-subtle;
+    font-size: 10px;
+    font-weight: @font-weight-semi-bold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .outline-view .item-container {
+    margin: 1px 0;
+  }
+
+  .outline-view .item {
+    height: 32px;
+    padding: 0 10px;
+    border-radius: 7px;
+    color: @text-color-subtle;
+    line-height: 32px;
+    transition:
+      color 120ms ease,
+      background-color 120ms ease;
+
+    &:hover {
+      color: @text-color;
+      background: rgba(16, 24, 40, 0.045);
+    }
+
+    &.selected {
+      color: @source-list-active-color;
+      background: @source-list-active-bg;
+      font-weight: @font-weight-medium;
+
+      img.content-mask {
+        background-color: @source-list-active-color;
+      }
+    }
+
+    .item-count-box,
+    .item-count-box.alt-count {
+      min-width: 18px;
+      padding: 1px 5px;
+      color: @text-color-subtle;
+      background: rgba(16, 24, 40, 0.06);
+      border-radius: 10px;
+      box-shadow: none;
+      text-align: center;
+    }
+  }
+}
+
+.account-switcher {
+  top: 12px;
+}
+
+// Thread list
+.thread-list,
+.draft-list {
+  background: @list-bg;
+
+  .list-container .list-rows {
+    background: @list-bg;
+  }
+
+  .list-item {
+    color: @text-color;
+    background: @list-bg;
+    border-bottom: 1px solid @list-border;
+    border-left: 3px solid transparent;
+    transition:
+      background-color 100ms ease,
+      border-color 100ms ease;
+
+    &:hover {
+      background: @list-hover-bg;
+    }
+
+    &.selected,
+    &.focused {
+      color: @text-color;
+      background: @list-focused-bg;
+      border-bottom-color: @list-focused-border;
+      border-left-color: @accent-primary;
+    }
+
+    &.focused .thread-icon,
+    &.focused .draft-icon,
+    &.focused .mail-important-icon {
+      filter: none;
+    }
+  }
+
+  .participants {
+    color: #344054;
+    font-weight: @font-weight-medium;
+  }
+
+  .details .subject {
+    color: @text-color;
+  }
+
+  .details .snippet,
+  .timestamp {
+    color: @text-color-subtle;
+    opacity: 1;
+  }
+
+  .message-count {
+    color: @accent-primary-dark;
+    background: rgba(91, 108, 249, 0.12);
+    border-radius: 10px;
+  }
+}
+
+.list-tabular .list-column {
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+// Reading pane and message cards
+#message-list {
+  background: @background-secondary;
+
+  .message-subject-wrap {
+    margin: 11px auto 13px;
+    padding: 0 18px;
+  }
+
+  .message-subject {
+    color: @text-color-heading;
+    font-size: 17px;
+    font-weight: @font-weight-semi-bold;
+  }
+
+  .messages-wrap .scroll-region-content-inner {
+    padding: 0 12px 14px;
+  }
+
+  .message-item-wrap {
+    padding-bottom: 10px;
+
+    .message-item-white-wrap {
+      border: 1px solid rgba(16, 24, 40, 0.07);
+      border-radius: 9px;
+      box-shadow: 0 1px 2px rgba(16, 24, 40, 0.045);
+      overflow: hidden;
+    }
+
+    &.collapsed .message-item-white-wrap {
+      background: #fbfcfd;
+    }
+  }
+
+  .footer-reply-area-wrap {
+    border: 1px solid rgba(16, 24, 40, 0.08);
+    border-radius: 9px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+    overflow: hidden;
+  }
+}
+
+// General interactive surfaces
+.btn {
+  border-radius: @border-radius-base;
+  box-shadow: @shadow-border;
+
+  &.btn-emphasis {
+    background: @accent-primary;
+    border-color: @accent-primary;
+    box-shadow: 0 1px 2px rgba(69, 86, 230, 0.22);
+
+    &:before {
+      display: none;
+    }
+
+    &:hover {
+      background: @accent-primary-dark;
+    }
+  }
+}
+
+.menu,
+.fixed-popover,
+.dropdown-menu {
+  border-color: @border-color-primary;
+  border-radius: 9px;
+  box-shadow: @standard-shadow;
+}
+
+.flexbox-handle-horizontal div {
+  box-shadow: 0.5px 0 0 @border-color-divider;
+}
+
+.scrollbar-track {
+  background: transparent;
+  border-left: 0;
+}
+
+.scrollbar-handle {
+  background: rgba(102, 112, 133, 0.28);
+  border-radius: 5px;
+}
+
+*:focus-visible {
+  outline: 2px solid rgba(91, 108, 249, 0.75);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

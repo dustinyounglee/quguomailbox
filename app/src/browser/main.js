@@ -20,7 +20,7 @@ const fs = require('fs');
 const IGNORABLE_STREAM_ERROR_CODES = new Set(['EPIPE', 'EROFS', 'EIO', 'ENOSPC', 'EBADF']);
 for (const stream of [process.stdout, process.stderr]) {
   if (stream) {
-    stream.on('error', error => {
+    stream.on('error', (error) => {
       if (error && IGNORABLE_STREAM_ERROR_CODES.has(error.code)) {
         return;
       }
@@ -40,17 +40,26 @@ if (typeof process.setFdLimit === 'function') {
   process.setFdLimit(1024);
 }
 
-const setupConfigDir = args => {
-  let dirname = 'Mailspring';
+const setupConfigDir = (args) => {
+  let dirname = 'QGMail';
+  let legacyDirname = 'Mailspring';
   if (args.devMode) {
-    dirname = 'Mailspring-dev';
+    dirname = 'QGMail-dev';
+    legacyDirname = 'Mailspring-dev';
   }
   if (args.specMode) {
-    dirname = 'Mailspring-spec';
+    dirname = 'QGMail-spec';
+    legacyDirname = 'Mailspring-spec';
   }
 
   // Check if a custom config dir was provided via --config-dir-path
   let configDirPath = args.configDirPath || path.join(app.getPath('appData'), dirname);
+
+  // Existing users keep their current local database and account settings after the rename.
+  const legacyConfigDirPath = path.join(app.getPath('appData'), legacyDirname);
+  if (!args.configDirPath && !fs.existsSync(configDirPath) && fs.existsSync(legacyConfigDirPath)) {
+    configDirPath = legacyConfigDirPath;
+  }
 
   if (process.platform === 'linux' && process.env.SNAP) {
     // for linux snap, use the sandbox directory that is persisted between snap revisions
@@ -82,20 +91,17 @@ const setupErrorLogger = (args = {}) => {
     resourcePath: args.resourcePath,
   });
   process.on('uncaughtException', (error, origin) => errorLogger.reportError(error, { origin }));
-  process.on('unhandledRejection', reason => errorLogger.reportError(reason));
+  process.on('unhandledRejection', (reason) => errorLogger.reportError(reason));
   return errorLogger;
 };
 
-const declareOptions = argv => {
+const declareOptions = (argv) => {
   const optimist = require('optimist');
   const options = optimist(argv);
   options.usage(
-    `Mailspring\n\nUsage: mailspring [options] [recipient] [attachment]\n\nRun Mailspring: The open source extensible email client\n\n\`mailspring mailto:johndoe@example.com\` to compose an e-mail to johndoe@example.com.\n\`mailspring ./attachment.txt\` to compose an e-mail with a text file attached.\n\`mailspring --dev\` to start the client in dev mode.\n\`mailspring --test\` to run unit tests.`
+    `QGMail\n\nUsage: qgmail [options] [recipient] [attachment]\n\nRun QGMail: 趣果私邮客户端\n\n\`qgmail mailto:johndoe@example.com\` to compose an e-mail to johndoe@example.com.\n\`qgmail ./attachment.txt\` to compose an e-mail with a text file attached.\n\`qgmail --dev\` to start the client in dev mode.\n\`qgmail --test\` to run unit tests.`
   );
-  options
-    .alias('d', 'dev')
-    .boolean('d')
-    .describe('d', 'Run in development mode.');
+  options.alias('d', 'dev').boolean('d').describe('d', 'Run in development mode.');
   options
     .alias('t', 'test')
     .boolean('t')
@@ -112,18 +118,12 @@ const declareOptions = argv => {
   options.boolean('enable-crashpad');
   options.boolean('allow-file-access-from-files');
   options.boolean('source-app-id');
-  options
-    .alias('h', 'help')
-    .boolean('h')
-    .describe('h', 'Print this usage message.');
-  options
-    .alias('l', 'log-file')
-    .string('l')
-    .describe('l', 'Log all test output to file.');
+  options.alias('h', 'help').boolean('h').describe('h', 'Print this usage message.');
+  options.alias('l', 'log-file').string('l').describe('l', 'Log all test output to file.');
   options
     .alias('c', 'config-dir-path')
     .string('c')
-    .describe('c', 'Override the path to the Mailspring configuration directory');
+    .describe('c', 'Override the path to the QGMail configuration directory');
   options
     .alias('s', 'spec-directory')
     .string('s')
@@ -135,18 +135,12 @@ const declareOptions = argv => {
       'f',
       'Override the default file regex to determine which tests should run (defaults to "-spec.(js|jsx|es6|es)$" )'
     );
-  options
-    .alias('v', 'version')
-    .boolean('v')
-    .describe('v', 'Print the version.');
-  options
-    .alias('b', 'background')
-    .boolean('b')
-    .describe('b', 'Start Mailspring in the background');
+  options.alias('v', 'version').boolean('v').describe('v', 'Print the version.');
+  options.alias('b', 'background').boolean('b').describe('b', 'Start QGMail in the background');
   return options;
 };
 
-const parseCommandLine = argv => {
+const parseCommandLine = (argv) => {
   const pkg = require('../../package.json');
   const version = `${pkg.version}-${pkg.commitHash}`;
 
@@ -277,7 +271,7 @@ const start = () => {
     // into the Start Menu shortcut. Without this, action/reply notification
     // events are silently dropped (COM server is never registered).
     app.setToastActivatorCLSID('{E6AD16B0-2830-48E7-9DB7-439152FA917B}');
-    app.setAppUserModelId('com.squirrel.mailspring.mailspring');
+    app.setAppUserModelId('com.squirrel.qgmail.qgmail');
   }
 
   // Set the app name explicitly for Linux to ensure the system tray icon
@@ -285,9 +279,8 @@ const start = () => {
   // StatusNotifierItem ID on Linux, causing their tray visibility settings
   // to be synchronized. See: https://github.com/electron/electron/issues/40936
   if (process.platform === 'linux') {
-    app.setName('Mailspring');
+    app.setName('QGMail');
   }
-
 
   protocol.registerSchemesAsPrivileged([
     {
@@ -296,17 +289,17 @@ const start = () => {
         secure: true,
         supportFetchAPI: true,
         corsEnabled: true,
-      }
-    }
-  ])
+      },
+    },
+  ]);
 
   if (handleStartupEventWithSquirrel()) {
     return;
   }
 
   // On Windows, register the AppUserModelId with a display name so notifications
-  // show "Mailspring" instead of "com.squirrel.mailspring.mailspring".
-  // Also register mailto: protocol handler so Windows knows Mailspring can handle
+  // Show "QGMail" instead of the internal application identifier.
+  // Also register mailto: protocol handler so Windows knows QGMail can handle
   // mailto: links (this doesn't make it the default, just registers it as an option).
   // This handles existing installations and ensures registration completes even if
   // the Squirrel install hook's detached processes didn't finish in time.
@@ -392,7 +385,7 @@ const start = () => {
           .replace('app.asar', 'app.asar.unpacked'),
         { allowFileAccess: true }
       )
-      .catch(err => console.error(`Error loading language detection extension: ${err}`));
+      .catch((err) => console.error(`Error loading language detection extension: ${err}`));
 
     session.defaultSession.webRequest.onBeforeSendHeaders(o365Filter, (details, callback) => {
       delete details.requestHeaders['Origin'];
@@ -417,8 +410,9 @@ const start = () => {
     });
 
     // eslint-disable-next-line
-    const Application = require(path.join(options.resourcePath, 'src', 'browser', 'application'))
-      .default;
+    const Application = require(
+      path.join(options.resourcePath, 'src', 'browser', 'application')
+    ).default;
     global.application = new Application();
     global.application.start(options);
 

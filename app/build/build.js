@@ -43,10 +43,10 @@ function spawn(options) {
     const stdout = [];
     const stderr = [];
     const proc = childSpawn(options.cmd, options.args, options.opts);
-    proc.stdout.on('data', data => stdout.push(data.toString()));
-    proc.stderr.on('data', data => stderr.push(data.toString()));
+    proc.stdout.on('data', (data) => stdout.push(data.toString()));
+    proc.stderr.on('data', (data) => stderr.push(data.toString()));
     proc.on('error', reject);
-    proc.on('close', exitCode => {
+    proc.on('close', (exitCode) => {
       const result = { stdout: stdout.join(''), stderr: stderr.join(''), code: exitCode };
       if (exitCode !== 0) {
         console.error(result.stderr);
@@ -62,9 +62,9 @@ const symlinkedPackages = [];
 function resolveRealSymlinkPaths() {
   console.log('---> Resolving symlinks');
   const dirs = ['internal_packages', 'src', 'spec', 'node_modules'];
-  dirs.forEach(dir => {
+  dirs.forEach((dir) => {
     const absoluteDir = path.join(appDir, dir);
-    fs.readdirSync(absoluteDir).forEach(packageName => {
+    fs.readdirSync(absoluteDir).forEach((packageName) => {
       const relativePackageDir = path.join(dir, packageName);
       const absolutePackageDir = path.join(absoluteDir, packageName);
       const realPackagePath = fs.realpathSync(absolutePackageDir).replace('/private/', '/');
@@ -122,8 +122,8 @@ function writeFileEnsureDir(filePath, contents) {
 
 function runTranspilers({ buildPath }) {
   console.log('---> Running TypeScript Compiler');
-  sourceGlobs.forEach(pattern => {
-    glob.sync(pattern, { cwd: buildPath }).forEach(relPath => {
+  sourceGlobs.forEach((pattern) => {
+    glob.sync(pattern, { cwd: buildPath }).forEach((relPath) => {
       const tsPath = path.join(buildPath, relPath);
       const tsCode = fs.readFileSync(tsPath).toString();
       if (/(node_modules|\.js$)/.test(tsPath)) return;
@@ -145,7 +145,7 @@ async function runUploadSourceMapsToSentry({ buildPath }) {
   const mapFiles = glob.sync('**/*.js.map', { cwd: buildPath });
 
   const cleanup = () => {
-    mapFiles.forEach(relPath => fs.unlinkSync(path.join(buildPath, relPath)));
+    mapFiles.forEach((relPath) => fs.unlinkSync(path.join(buildPath, relPath)));
     console.log(`---> Cleaned up ${mapFiles.length} source map files`);
   };
 
@@ -197,7 +197,7 @@ function buildPackagerOptions() {
     appVersion: packageJSON.version,
     platform,
     protocols: [
-      { name: 'Mailspring Protocol', schemes: ['mailspring'] },
+      { name: 'QGMail Protocol', schemes: ['mailspring'] },
       { name: 'Mailto Protocol', schemes: ['mailto'] },
     ],
     dir: appDir,
@@ -213,7 +213,7 @@ function buildPackagerOptions() {
       win32: path.resolve(appDir, 'build', 'resources', 'win', 'mailspring-square.ico'),
       linux: undefined,
     }[platform],
-    name: { darwin: 'Mailspring', win32: 'Mailspring', linux: 'mailspring' }[platform],
+    name: { darwin: 'QGMail', win32: 'QGMail', linux: 'qgmail' }[platform],
     appCopyright: `Copyright (C) 2014-${new Date().getFullYear()} Foundry 376, LLC. All rights reserved.`,
     derefSymlinks: false,
     asar: {
@@ -281,7 +281,7 @@ function buildPackagerOptions() {
           // Contents/embedded.provisionprofile. It must be set here at the
           // top level — it is not a per-file option.
           provisioningProfile: process.env.APPLE_PROVISIONING_PROFILE_PATH,
-          optionsForFile: filePath => {
+          optionsForFile: (filePath) => {
             // Only the main app bundle gets the full entitlements plist,
             // which includes restricted entitlements (keychain-access-groups,
             // com.apple.developer.*) that are validated against the embedded
@@ -292,7 +292,7 @@ function buildPackagerOptions() {
             // cannot match to a profile scoped to that binary.
             // Note: electron-osx-sign passes the .app bundle path (not the
             // inner executable path) when signing the top-level app bundle.
-            const isMainExecutable = filePath.endsWith('/Mailspring.app');
+            const isMainExecutable = filePath.endsWith('/QGMail.app');
             return {
               hardenedRuntime: true,
               entitlements: path.resolve(
@@ -316,16 +316,16 @@ function buildPackagerOptions() {
       : undefined,
     win32metadata: {
       CompanyName: 'Foundry 376, LLC',
-      FileDescription: 'Mailspring',
+      FileDescription: packageJSON.productName,
       LegalCopyright: `Copyright (C) 2014-${new Date().getFullYear()} Foundry 376, LLC. All rights reserved.`,
-      ProductName: 'Mailspring',
+      ProductName: packageJSON.productName,
     },
     // NOTE: The following plist keys can NOT be set in the extra.plist since
     // they are manually overridden by electron-packager based on this config:
     //   CFBundleDisplayName, CFBundleExecutable, CFBundleIdentifier, CFBundleName
     // See https://github.com/electron-userland/electron-packager/blob/master/mac.js#L50
     extendInfo: path.resolve(appDir, 'build', 'resources', 'mac', 'extra.plist'),
-    appBundleId: 'com.mailspring.mailspring',
+    appBundleId: 'com.qgmail.qgmail',
     afterCopy: [
       runCopyPlatformSpecificResources,
       runWriteCommitHashIntoPackage,
@@ -359,23 +359,26 @@ async function runPackager() {
 }
 
 async function createMacZip() {
-  const zipPath = path.join(outputDir, 'Mailspring.zip');
+  const zipPath = path.join(outputDir, 'QGMail.zip');
   if (fs.existsSync(zipPath)) {
     fs.unlinkSync(zipPath);
   }
   const arch = process.env.OVERRIDE_TO_INTEL ? 'x64' : process.arch;
-  const cwd = path.join(outputDir, `Mailspring-darwin-${arch}`);
+  const cwd = path.join(outputDir, `QGMail-darwin-${arch}`);
   await spawn({
     cmd: 'zip',
-    args: ['-9', '-y', '-r', '-9', '-X', zipPath, 'Mailspring.app'],
+    args: ['-9', '-y', '-r', '-9', '-X', zipPath, 'QGMail.app'],
     opts: { cwd },
   });
   console.log(`>> Created ${zipPath}`);
 }
 
-function writeFromTemplate(filePath, data) {
+function writeFromTemplate(filePath, data, outputName) {
   const template = _.template(String(fs.readFileSync(filePath)));
-  const finishedPath = path.join(outputDir, path.basename(filePath).replace('.in', ''));
+  const finishedPath = path.join(
+    outputDir,
+    outputName || path.basename(filePath).replace('.in', '')
+  );
   writeFileEnsureDir(finishedPath, template(data));
   return finishedPath;
 }
@@ -385,7 +388,7 @@ const linuxArch = { ia32: 'i386', x64: 'amd64', arm64: 'arm64' }[process.arch];
 async function createDebInstaller() {
   if (!linuxArch) throw new Error(`Unsupported arch ${process.arch}`);
 
-  const contentsDir = path.join(outputDir, `mailspring-linux-${process.arch}`);
+  const contentsDir = path.join(outputDir, `qgmail-linux-${process.arch}`);
   const linuxAssetsDir = path.resolve(path.join(buildDir, 'resources', 'linux'));
 
   // `du` failures (e.g. permission errors) are non-fatal — fall back to a
@@ -395,7 +398,9 @@ async function createDebInstaller() {
     const { stdout } = await spawn({ cmd: 'du', args: ['-sk', contentsDir] });
     installedSize = stdout.split(/\s+/).shift() || '200000';
   } catch (err) {
-    console.warn(`---> du failed (${err.message}), defaulting installed size to ${installedSize}KB`);
+    console.warn(
+      `---> du failed (${err.message}), defaulting installed size to ${installedSize}KB`
+    );
   }
 
   const data = {
@@ -404,28 +409,32 @@ async function createDebInstaller() {
     description: packageJSON.description,
     productName: packageJSON.productName,
     desktopName: packageJSON.desktopName || `${packageJSON.name}.desktop`,
-    linuxShareDir: '/usr/share/mailspring',
+    linuxShareDir: '/usr/share/qgmail',
     arch: linuxArch,
     section: 'mail',
-    maintainer: 'Mailspring Team <support@getmailspring.com>',
+    maintainer: 'QGMail Team',
     installedSize,
   };
   writeFromTemplate(path.join(linuxAssetsDir, 'debian', 'control.in'), data);
-  writeFromTemplate(path.join(linuxAssetsDir, 'Mailspring.desktop.in'), data);
-  writeFromTemplate(path.join(linuxAssetsDir, 'mailspring.metainfo.xml.in'), data);
+  writeFromTemplate(path.join(linuxAssetsDir, 'Mailspring.desktop.in'), data, data.desktopName);
+  writeFromTemplate(
+    path.join(linuxAssetsDir, 'mailspring.metainfo.xml.in'),
+    data,
+    'qgmail.metainfo.xml'
+  );
 
   const icon = path.join(appDir, 'build', 'resources', 'linux', 'icons', '512.png');
   await spawn({
     cmd: path.join(appDir, 'script', 'mkdeb'),
     args: [packageJSON.version, linuxArch, icon, linuxAssetsDir, contentsDir, outputDir],
   });
-  console.log(`Created ${outputDir}/mailspring-${packageJSON.version}-${linuxArch}.deb`);
+  console.log(`Created ${outputDir}/qgmail-${packageJSON.version}-${linuxArch}.deb`);
 }
 
 async function createRpmInstaller() {
   if (!linuxArch) throw new Error(`Unsupported arch ${process.arch}`);
 
-  const contentsDir = path.join(outputDir, `mailspring-linux-${process.arch}`);
+  const contentsDir = path.join(outputDir, `qgmail-linux-${process.arch}`);
   const linuxAssetsDir = path.resolve(path.join(buildDir, 'resources', 'linux'));
   const rpmDir = path.join(outputDir, 'rpm');
   if (fs.existsSync(rpmDir)) {
@@ -438,14 +447,26 @@ async function createRpmInstaller() {
     description: packageJSON.description,
     productName: packageJSON.productName,
     desktopName: packageJSON.desktopName || `${packageJSON.name}.desktop`,
-    linuxShareDir: '/usr/local/share/mailspring',
+    linuxShareDir: '/usr/local/share/qgmail',
     linuxAssetsDir,
     contentsDir,
   };
 
-  writeFromTemplate(path.join(linuxAssetsDir, 'redhat', 'mailspring.spec.in'), templateData);
-  writeFromTemplate(path.join(linuxAssetsDir, 'Mailspring.desktop.in'), templateData);
-  writeFromTemplate(path.join(linuxAssetsDir, 'mailspring.metainfo.xml.in'), templateData);
+  writeFromTemplate(
+    path.join(linuxAssetsDir, 'redhat', 'mailspring.spec.in'),
+    templateData,
+    'qgmail.spec'
+  );
+  writeFromTemplate(
+    path.join(linuxAssetsDir, 'Mailspring.desktop.in'),
+    templateData,
+    templateData.desktopName
+  );
+  writeFromTemplate(
+    path.join(linuxAssetsDir, 'mailspring.metainfo.xml.in'),
+    templateData,
+    'qgmail.metainfo.xml'
+  );
 
   await spawn({
     cmd: path.join(appDir, 'script', 'mkrpm'),
@@ -472,7 +493,7 @@ async function main() {
   // app/build/create-signed-windows-installer.js because of path issues.
 }
 
-main().catch(err => {
+main().catch((err) => {
   console.error(err);
   process.exit(1);
 });

@@ -124,9 +124,7 @@ class _AccountStore extends MailspringStore {
     });
 
     if (message && AppEnv.isMainWindow()) {
-      AppEnv.showErrorDialog(
-        `Mailspring was unable to load your account preferences.\n\n${message}`
-      );
+      AppEnv.showErrorDialog(`QGMail was unable to load your account preferences.\n\n${message}`);
     }
   };
 

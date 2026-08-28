@@ -332,12 +332,12 @@ class AttachmentStore extends MailspringStore {
     let message = null;
     if (['EPERM', 'EROFS', 'EPIPE', 'EBUSY', 'EMFILE', 'EACCES', 'UNKNOWN'].includes(error.code)) {
       message = localized(
-        'Mailspring could not save an attachment. Check that permissions are set correctly and try restarting Mailspring if the issue persists.'
+        'QGMail could not save an attachment. Check that permissions are set correctly and try restarting QGMail if the issue persists.'
       );
     }
     if (['ENOSPC'].includes(error.code)) {
       message = localized(
-        'Mailspring could not save an attachment because you have run out of disk space.'
+        'QGMail could not save an attachment because you have run out of disk space.'
       );
     }
 

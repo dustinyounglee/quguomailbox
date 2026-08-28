@@ -7,18 +7,18 @@
   <summary><%= description %></summary>
   <description>
     <p>
-      Mailspring is a new version of Nylas Mail maintained by one of the original authors. It's
-      faster, leaner, and shipping today! It replaces the JavaScript sync code in Nylas Mail with
+      QGMail is the English product name of 趣果私邮客户端. It is a fast, lean desktop mail client
+      that replaces the JavaScript sync code in Nylas Mail with
       a new C++ sync engine based on Mailcore2. It uses roughly half the RAM and CPU of Nylas Mail
       and idles with almost zero "CPU Wakes", which translates to great battery life. It also has
       an entirely revamped composer and other great new features.
     </p>
     <p>
-      Mailspring comes packed with powerful features like Unified Inbox, Snooze, Send Later, Mail
-      Rules, Templates and more. Mailspring Pro, which you can unlock with a monthly subscription,
+      QGMail comes packed with powerful features like Unified Inbox, Snooze, Send Later, Mail
+      Rules, Templates and more. QGMail Pro, which you can unlock with a monthly subscription,
       adds even more features for people who send a ton of email: link tracking, read receipts,
       mailbox analytics, contact and company profiles. All of these features run in the client -
-      Mailspring does not send your email credentials to the cloud.
+      QGMail does not send your email credentials to the cloud.
     </p>
   </description>
 
@@ -33,8 +33,8 @@
 
   <launchable type="desktop-id"><%= desktopName %></launchable>
 
-  <developer id="com.getmailspring">
-    <name>Mailspring</name>
+  <developer id="com.qgmail">
+    <name>QGMail</name>
   </developer>
 
   <branding>
@@ -44,7 +44,7 @@
 
   <screenshots>
     <screenshot type="default">
-      <caption>Mailspring Hero</caption>
+      <caption>QGMail Hero</caption>
       <image type="source">https://getmailspring.com/static/img/hero_graphic_linux@2x.png</image>
     </screenshot>
   </screenshots>

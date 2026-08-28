@@ -32,7 +32,7 @@ If a string contains multiple placeholders, you can optionally reference the var
 It can be useful to run Mailspring with a specific locale. To do this, pass the `lang` flag at launch. For example:
 
 ```
-/Applications/Mailspring.app/Contents/MacOS/Mailspring --lang=de
+/Applications/QGMail.app/Contents/MacOS/QGMail --lang=de
 ```
 
 Or, when developing th app and running it from your working copy:

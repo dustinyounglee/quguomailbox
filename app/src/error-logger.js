@@ -64,8 +64,7 @@ module.exports = ErrorLogger = (function () {
     // "Unknown error" with only the IPC handler frame, which is unactionable.
     // Wrap such inputs in a real Error here so we capture the call site as
     // the stack and describe the original input in the message.
-    var hasMessage =
-      error && typeof error.message === 'string' && error.message.length > 0;
+    var hasMessage = error && typeof error.message === 'string' && error.message.length > 0;
     var hasStack = error && typeof error.stack === 'string' && error.stack.length > 0;
     if (!hasMessage && !hasStack) {
       var description;
@@ -145,8 +144,8 @@ module.exports = ErrorLogger = (function () {
       return;
     }
     require('electron').crashReporter.start({
-      productName: 'Mailspring',
-      companyName: 'Mailspring',
+      productName: 'QGMail',
+      companyName: 'QGMail',
       submitURL: `https://id.getmailspring.com/report-crash?ver=${appVersion}&platform=${process.platform}`,
       uploadToServer: true,
       autoSubmit: true,

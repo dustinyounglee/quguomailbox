@@ -74,7 +74,7 @@ export default class PreferencesMcp extends React.Component<Record<string, never
 
   _tryItPrompt() {
     return localized(
-      'Read the threads in my inbox using Mailspring - what should I prioritize? Draft a reply to the most important message.'
+      'Read the threads in my inbox using QGMail - what should I prioritize? Draft a reply to the most important message.'
     );
   }
 
@@ -344,7 +344,7 @@ export default class PreferencesMcp extends React.Component<Record<string, never
                   <h6>{localized('Quick Setup')}</h6>
                   <p className="mcp-description">
                     {localized(
-                      "Add Mailspring to your AI tools with one click. This writes the connection details to each tool's config file."
+                      "Add QGMail to your AI tools with one click. This writes the connection details to each tool's config file."
                     )}
                   </p>
                   <div className="mcp-quick-setup">

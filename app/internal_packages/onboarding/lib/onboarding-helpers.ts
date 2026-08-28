@@ -147,7 +147,7 @@ export async function expandAccountWithCommonSettings(account: Account) {
     if (mstemplate.alias) {
       mstemplate = MailspringProviderSettings[mstemplate.alias];
     }
-    console.log(`Using Mailspring Template: ${JSON.stringify(mstemplate, null, 2)}`);
+    console.log(`Using QGMail Template: ${JSON.stringify(mstemplate, null, 2)}`);
   } else {
     console.log(`Using Fallback Template`);
     mstemplate = {

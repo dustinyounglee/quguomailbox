@@ -1,14 +1,14 @@
 {
-  "name": "mailspring",
-  "productName": "Mailspring",
-  "desktopName": "Mailspring.desktop",
+  "name": "qgmail",
+  "productName": "QGMail",
+  "desktopName": "QGMail.desktop",
   "version": "1.23.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/foundry376/mailspring.git"
   },
   "commitHash": "COMMIT_INSERTED_DURING_PACKAGING",
-  "description": "The best email app for people and teams at work",
+  "description": "趣果私邮客户端（QGMail）",
   "license": "GPL-3.0",
   "main": "./src/browser/main.js",
   "dependencies": {

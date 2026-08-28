@@ -9,25 +9,23 @@ function showDialog(filePath) {
   if (dialogShown) return;
   dialogShown = true;
   const dialog =
-    process.type === 'renderer'
-      ? require('@electron/remote').dialog
-      : require('electron').dialog;
+    process.type === 'renderer' ? require('@electron/remote').dialog : require('electron').dialog;
   dialog.showErrorBox(
     'Plugin must be compiled',
-    `Mailspring no longer ships with a TypeScript compiler to recompile plugins on the fly. ` +
+    `QGMail no longer ships with a TypeScript compiler to recompile plugins on the fly. ` +
       `Ask the plugin developer to compile the plugin to vanilla JavaScript as a pre-publish step.` +
       `\n\nFile: ${filePath}`
   );
 }
 
-['.ts', '.tsx', '.jsx', '.es6'].forEach(extension => {
+['.ts', '.tsx', '.jsx', '.es6'].forEach((extension) => {
   Object.defineProperty(require.extensions, extension, {
     enumerable: true,
     writable: true,
     value: (module, filePath) => {
       showDialog(filePath);
       throw new Error(
-        `Cannot load ${filePath}: Mailspring no longer ships with a TypeScript compiler. ` +
+        `Cannot load ${filePath}: QGMail no longer ships with a TypeScript compiler. ` +
           `Plugins must be compiled to vanilla JavaScript as a pre-publish step.`
       );
     },

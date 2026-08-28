@@ -5,6 +5,7 @@ import url from 'url';
 import { EventEmitter } from 'events';
 import { isWaylandSession } from './is-wayland';
 import { XDG_DATA_PATHS, getFirstExistingPath } from '../utils/xdg-paths';
+import { localized } from '../intl';
 
 let WindowIconPath = null;
 let idNum = 0;
@@ -99,7 +100,7 @@ export default class MailspringWindow extends EventEmitter {
     type GetConstructorArgs<T> = T extends new (options: infer U) => any ? U : never;
     const browserWindowOptions: GetConstructorArgs<typeof BrowserWindow> = {
       show: false,
-      title: title || 'Mailspring',
+      title: title || localized('QGMail'),
       frame,
       width,
       height,
@@ -342,7 +343,7 @@ export default class MailspringWindow extends EventEmitter {
       const chosen = dialog.showMessageBoxSync(this.browserWindow, {
         type: 'warning',
         buttons: ['Close', 'Keep Waiting'],
-        message: 'Mailspring is not responding',
+        message: 'QGMail is not responding',
         detail: 'Would you like to force close it or keep waiting?',
       });
       if (chosen === 0) {
@@ -370,7 +371,7 @@ export default class MailspringWindow extends EventEmitter {
         const chosen = dialog.showMessageBoxSync({
           type: 'warning',
           buttons: ['Close Window', 'Reload', 'Keep It Open'],
-          message: 'Mailspring has crashed',
+          message: 'QGMail has crashed',
           detail: 'Please report this issue to us at support@getmailspring.com.',
         });
         if (chosen === 0) {

@@ -44,8 +44,8 @@ jobs:
 
       - name: Setup Provisioning Profile
         run: |
-          echo "APPLE_PROVISIONING_PROFILE_PATH=${{ runner.temp }}/Mailspring.provisionprofile" >> $GITHUB_ENV
-          echo $APPLE_PROVISIONING_PROFILE_B64 | base64 --decode > "${{ runner.temp }}/Mailspring.provisionprofile"
+          echo "APPLE_PROVISIONING_PROFILE_PATH=${{ runner.temp }}/QGMail.provisionprofile" >> $GITHUB_ENV
+          echo $APPLE_PROVISIONING_PROFILE_B64 | base64 --decode > "${{ runner.temp }}/QGMail.provisionprofile"
         env:
           APPLE_PROVISIONING_PROFILE_B64: ${{ secrets.APPLE_PROVISIONING_PROFILE_B64 }}
 
@@ -74,7 +74,7 @@ jobs:
       - name: Rename artifacts
         if: matrix.arch == 'arm64'
         run: |
-          mv app/dist/Mailspring.zip app/dist/Mailspring-AppleSilicon.zip
+          mv app/dist/QGMail.zip app/dist/QGMail-AppleSilicon.zip
 
       - name: Sync artifacts to S3 bucket
         run: |
